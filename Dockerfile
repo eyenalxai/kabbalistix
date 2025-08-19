@@ -1,13 +1,12 @@
-FROM rust:alpine AS rust-builder
-RUN apk add --no-cache musl-dev build-base
-RUN rustup default nightly
+FROM archlinux:latest AS rust-builder
+RUN pacman -Sy --noconfirm rust cargo
 WORKDIR /app
 COPY kabbalistix-rs/ ./kabbalistix-rs/
 WORKDIR /app/kabbalistix-rs
 RUN cargo build --release
 
-FROM node:24-alpine AS deps
-RUN apk add --no-cache libc6-compat
+FROM archlinux:latest AS deps
+RUN pacman -Sy --noconfirm nodejs npm yarn
 WORKDIR /app
 
 COPY package.json yarn.lock .yarnrc.yml ./
@@ -15,7 +14,8 @@ COPY .yarn/releases/ ./.yarn/releases/
 
 RUN yarn install --immutable
 
-FROM node:24-alpine AS builder
+FROM archlinux:latest AS builder
+RUN pacman -Sy --noconfirm nodejs npm yarn
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -26,16 +26,19 @@ ENV SKIP_VALIDATION=true
 
 RUN yarn build
 
-FROM node:24-alpine AS runner
+FROM archlinux:latest AS runner
+RUN pacman -Sy --noconfirm nodejs npm
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
+RUN groupadd -g 1001 nodejs
+RUN useradd -u 1001 -g nodejs nextjs
 
+RUN mkdir -p ./kabbalistix-rs/target/release
 COPY --from=rust-builder /app/kabbalistix-rs/target/release/kabbalistix ./kabbalistix-rs/target/release/kabbalistix
 RUN chmod +x ./kabbalistix-rs/target/release/kabbalistix
+RUN chown -R nextjs:nodejs ./kabbalistix-rs
 
 COPY --from=builder /app/public ./public
 
