@@ -1,5 +1,6 @@
-FROM rust:1.83-alpine AS rust-builder
-RUN apk add --no-cache musl-dev
+FROM rust:alpine AS rust-builder
+RUN apk add --no-cache musl-dev build-base
+RUN rustup default nightly
 WORKDIR /app
 COPY kabbalistix-rs/ ./kabbalistix-rs/
 WORKDIR /app/kabbalistix-rs
@@ -10,8 +11,11 @@ ENV NODE_ENV=production
 RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn/releases/ ./.yarn/releases/
+
+RUN yarn install --immutable
 
 COPY . .
 
@@ -33,12 +37,14 @@ RUN chmod +x ./kabbalistix-rs/target/release/kabbalistix
 
 COPY --from=node-builder --chown=nextjs:nodejs /app/package.json ./package.json
 COPY --from=node-builder --chown=nextjs:nodejs /app/yarn.lock ./yarn.lock
+COPY --from=node-builder --chown=nextjs:nodejs /app/.yarnrc.yml ./.yarnrc.yml
+COPY --from=node-builder --chown=nextjs:nodejs /app/.yarn ./.yarn
 COPY --from=node-builder --chown=nextjs:nodejs /app/next.config.ts ./next.config.ts
 COPY --from=node-builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=node-builder --chown=nextjs:nodejs /app/public ./public
 COPY --from=node-builder --chown=nextjs:nodejs /app/src ./src
 
-RUN yarn install --frozen-lockfile --production && yarn cache clean
+RUN yarn workspaces focus --production && yarn cache clean
 
 USER nextjs
 
