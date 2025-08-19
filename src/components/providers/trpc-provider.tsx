@@ -8,7 +8,7 @@ import {
 import { httpBatchStreamLink, loggerLink } from "@trpc/client"
 import { createTRPCReact } from "@trpc/react-query"
 import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server"
-import { useState } from "react"
+import { type PropsWithChildren, useState } from "react"
 import SuperJSON from "superjson"
 
 import type { AppRouter } from "@/server/api/root"
@@ -49,7 +49,7 @@ export const api = createTRPCReact<AppRouter>()
 export type RouterInputs = inferRouterInputs<AppRouter>
 export type RouterOutputs = inferRouterOutputs<AppRouter>
 
-export function TRPCReactProvider(props: { children: React.ReactNode }) {
+export function TRPCReactProvider(props: PropsWithChildren) {
 	const queryClient = getQueryClient()
 
 	const [trpcClient] = useState(() =>
