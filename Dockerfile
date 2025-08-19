@@ -6,10 +6,8 @@ COPY kabbalistix-rs/ ./kabbalistix-rs/
 WORKDIR /app/kabbalistix-rs
 RUN cargo build --release
 
-FROM node:24-alpine AS node-builder
-ENV NODE_ENV=production
+FROM node:24-alpine AS deps
 RUN apk add --no-cache libc6-compat
-
 WORKDIR /app
 
 COPY package.json yarn.lock .yarnrc.yml ./
@@ -17,6 +15,9 @@ COPY .yarn/releases/ ./.yarn/releases/
 
 RUN yarn install --immutable
 
+FROM node:24-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 ARG NEXT_PUBLIC_APP_URL
@@ -28,29 +29,27 @@ RUN yarn build
 FROM node:24-alpine AS runner
 WORKDIR /app
 
-RUN apk add --no-cache libc6-compat
+ENV NODE_ENV=production
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 COPY --from=rust-builder /app/kabbalistix-rs/target/release/kabbalistix ./kabbalistix-rs/target/release/kabbalistix
 RUN chmod +x ./kabbalistix-rs/target/release/kabbalistix
 
-COPY --from=node-builder --chown=nextjs:nodejs /app/package.json ./package.json
-COPY --from=node-builder --chown=nextjs:nodejs /app/yarn.lock ./yarn.lock
-COPY --from=node-builder --chown=nextjs:nodejs /app/.yarnrc.yml ./.yarnrc.yml
-COPY --from=node-builder --chown=nextjs:nodejs /app/.yarn ./.yarn
-COPY --from=node-builder --chown=nextjs:nodejs /app/next.config.ts ./next.config.ts
-COPY --from=node-builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=node-builder --chown=nextjs:nodejs /app/public ./public
-COPY --from=node-builder --chown=nextjs:nodejs /app/src ./src
+COPY --from=builder /app/public ./public
 
-RUN yarn workspaces focus --production && yarn cache clean
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
+
+EXPOSE 3000
 
 ENV HOST=0.0.0.0
 ARG PORT
 ENV PORT=${PORT:-3000}
-EXPOSE ${PORT}
 
-CMD ["yarn", "start"]
+CMD ["node", "server.js"]

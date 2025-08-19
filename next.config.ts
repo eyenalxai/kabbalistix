@@ -8,7 +8,8 @@ const extractDomain = (url: string) => {
 
 const nextConfig: NextConfig = {
 	transpilePackages: ["geist"],
-	allowedDevOrigins: [extractDomain(env.NEXT_PUBLIC_APP_URL)]
+	allowedDevOrigins: [extractDomain(env.NEXT_PUBLIC_APP_URL)],
+	output: "standalone"
 }
 
 module.exports = nextConfig
