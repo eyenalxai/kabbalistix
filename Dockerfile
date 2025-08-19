@@ -1,7 +1,7 @@
 FROM archlinux:latest AS rust-builder
-RUN pacman -Sy --noconfirm rust cargo
+RUN pacman -Sy --noconfirm rust cargo git
 WORKDIR /app
-COPY kabbalistix-rs/ ./kabbalistix-rs/
+COPY . .
 WORKDIR /app/kabbalistix-rs
 RUN cargo build --release
 
