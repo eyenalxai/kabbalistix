@@ -14,5 +14,5 @@ export const env = createEnv({
 		NODE_ENV: process.env.NODE_ENV,
 		NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL
 	},
-	skipValidation: process.env.BUILD_TIME?.toLowerCase() === "true"
+	skipValidation: process.env.SKIP_VALIDATION?.toLowerCase() === "true"
 })
