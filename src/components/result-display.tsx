@@ -1,29 +1,29 @@
 "use client"
 
-import { markdownLookBack } from "@llm-ui/markdown"
-import { type LLMOutputComponent, useLLMOutput } from "@llm-ui/react"
+import { Copy } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import rehypeKatex from "rehype-katex"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
-import "katex/dist/katex.min.css"
 import { toast } from "sonner"
 import type { z } from "zod"
+import { ErrorComponent } from "@/components/error-component"
+import { Loading } from "@/components/loading"
 import { api } from "@/components/providers/trpc-provider"
 import { Button } from "@/components/ui/button"
 import { copyToClipboard } from "@/lib/clipboard"
+import { cn } from "@/lib/utils"
 import type { inputSchema } from "@/lib/zod/input"
 
-// Markdown component for rendering LLM output with LaTeX support
-const MarkdownComponent: LLMOutputComponent = ({ blockMatch }) => {
-	const markdown = blockMatch.output
+// Markdown component for rendering content with LaTeX support
+const MarkdownComponent = ({ content }: { content: string }) => {
 	return (
 		<div className="prose prose-sm max-w-none dark:prose-invert">
 			<ReactMarkdown
 				remarkPlugins={[remarkGfm, remarkMath]}
 				rehypePlugins={[rehypeKatex]}
 			>
-				{markdown}
+				{content}
 			</ReactMarkdown>
 		</div>
 	)
@@ -33,40 +33,26 @@ export const ResultDisplay = (props: {
 	input: z.infer<typeof inputSchema>
 }) => {
 	const { data, isPending, error } = api.stuff.getPublicStuff.useQuery(
-		props.input
+		props.input,
+		{
+			retry: false
+		}
 	)
 
-	// Use LLM output processing for the result
-	const { blockMatches } = useLLMOutput({
-		llmOutput: data?.latex || "",
-		blocks: [],
-		fallbackBlock: {
-			component: MarkdownComponent,
-			lookBack: markdownLookBack()
-		},
-		isStreamFinished: true // No streaming, so always finished
-	})
-
 	if (isPending) {
-		return <div>Loading...</div>
+		return <Loading />
 	}
 
 	if (error) {
-		return <div>Error: {error.message}</div>
+		return <ErrorComponent message={error.message} />
 	}
 
 	return (
-		<div className="space-y-4">
-			{blockMatches.map((blockMatch, index) => {
-				const Component = blockMatch.block.component
-				return (
-					<Component
-						key={`block-${index}-${blockMatch.output.slice(0, 10)}`}
-						blockMatch={blockMatch}
-					/>
-				)
-			})}
+		<div className={cn("flex", "flex-row", "gap-4", "items-center")}>
+			<MarkdownComponent content={data?.latex || ""} />
 			<Button
+				variant="outline"
+				size="icon"
 				onClick={() =>
 					copyToClipboard(data.expression).match(
 						() =>
@@ -80,7 +66,7 @@ export const ResultDisplay = (props: {
 					)
 				}
 			>
-				Copy Expression
+				<Copy className="h-4 w-4" />
 			</Button>
 		</div>
 	)
