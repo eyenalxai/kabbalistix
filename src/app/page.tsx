@@ -7,6 +7,7 @@ import { toast } from "sonner"
 import type { z } from "zod"
 import { ResultDisplay } from "@/components/result-display"
 import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import {
 	Form,
 	FormControl,
@@ -46,68 +47,70 @@ export default function Page() {
 				"w-full"
 			)}
 		>
-			<Form {...methods}>
-				<form
-					onSubmit={methods.handleSubmit(onSubmit)}
-					className={cn("w-full", "flex", "flex-col", "gap-4")}
-				>
-					<FormField
-						control={methods.control}
-						name="input"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Input</FormLabel>
-								<FormControl>
-									<Input
-										placeholder="1"
-										{...field}
-										onChange={(e) => {
-											stringToNumber(e.target.value).match(
-												(value) => field.onChange(value),
-												(error) => {
-													toast.error(error, {
-														position: "bottom-center"
-													})
-												}
-											)
-										}}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={methods.control}
-						name="target"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Target</FormLabel>
-								<FormControl>
-									<Input
-										placeholder="10"
-										{...field}
-										onChange={(e) => {
-											stringToNumber(e.target.value).match(
-												(value) => field.onChange(value),
-												(error) => {
-													toast.error(error, {
-														position: "bottom-center"
-													})
-												}
-											)
-										}}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<Button className={cn("w-fit", "self-center")} type="submit">
-						Submit
-					</Button>
-				</form>
-			</Form>
+			<Card className={cn("p-4", "w-full")}>
+				<Form {...methods}>
+					<form
+						onSubmit={methods.handleSubmit(onSubmit)}
+						className={cn("w-full", "flex", "flex-col", "gap-4")}
+					>
+						<FormField
+							control={methods.control}
+							name="input"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Input</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="1"
+											{...field}
+											onChange={(e) => {
+												stringToNumber(e.target.value).match(
+													(value) => field.onChange(value),
+													(error) => {
+														toast.error(error, {
+															position: "bottom-center"
+														})
+													}
+												)
+											}}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={methods.control}
+							name="target"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Target</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="10"
+											{...field}
+											onChange={(e) => {
+												stringToNumber(e.target.value).match(
+													(value) => field.onChange(value),
+													(error) => {
+														toast.error(error, {
+															position: "bottom-center"
+														})
+													}
+												)
+											}}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<Button className={cn("w-fit")} type="submit">
+							Find Expression
+						</Button>
+					</form>
+				</Form>
+			</Card>
 			{input && <ResultDisplay input={input} />}
 		</div>
 	)
