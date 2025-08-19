@@ -15,7 +15,7 @@ import type { inputSchema } from "@/lib/zod/input"
 export const ResultDisplay = (props: {
 	input: z.infer<typeof inputSchema>
 }) => {
-	const { data, isPending, error } = api.stuff.getPublicStuff.useQuery(
+	const { data, isPending, error } = api.expression.findExpression.useQuery(
 		props.input,
 		{
 			retry: false

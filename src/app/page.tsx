@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
+
 import type { z } from "zod"
 import { ResultDisplay } from "@/components/result-display"
 import { Button } from "@/components/ui/button"
@@ -17,14 +17,16 @@ import {
 	FormMessage
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { stringToNumber } from "@/lib/number"
+
 import { cn } from "@/lib/utils"
 import { inputSchema } from "@/lib/zod/input"
 
-export default function Page() {
-	const [input, setInput] = useState<z.infer<typeof inputSchema> | null>(null)
+type FormData = z.infer<typeof inputSchema>
 
-	const methods = useForm<z.infer<typeof inputSchema>>({
+export default function Page() {
+	const [input, setInput] = useState<FormData | null>(null)
+
+	const methods = useForm<FormData>({
 		resolver: zodResolver(inputSchema),
 		defaultValues: {
 			input: undefined,
@@ -32,7 +34,7 @@ export default function Page() {
 		}
 	})
 
-	const onSubmit = (values: z.infer<typeof inputSchema>) => {
+	const onSubmit = (values: FormData) => {
 		setInput(values)
 	}
 
@@ -61,17 +63,13 @@ export default function Page() {
 									<FormLabel>Input</FormLabel>
 									<FormControl>
 										<Input
+											type="number"
 											placeholder="1"
 											{...field}
+											value={field.value ?? ""}
 											onChange={(e) => {
-												stringToNumber(e.target.value).match(
-													(value) => field.onChange(value),
-													(error) => {
-														toast.error(error, {
-															position: "bottom-center"
-														})
-													}
-												)
+												const value = e.target.value
+												field.onChange(value === "" ? undefined : Number(value))
 											}}
 										/>
 									</FormControl>
@@ -87,17 +85,13 @@ export default function Page() {
 									<FormLabel>Target</FormLabel>
 									<FormControl>
 										<Input
+											type="number"
 											placeholder="10"
 											{...field}
+											value={field.value ?? ""}
 											onChange={(e) => {
-												stringToNumber(e.target.value).match(
-													(value) => field.onChange(value),
-													(error) => {
-														toast.error(error, {
-															position: "bottom-center"
-														})
-													}
-												)
+												const value = e.target.value
+												field.onChange(value === "" ? undefined : Number(value))
 											}}
 										/>
 									</FormControl>

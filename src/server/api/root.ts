@@ -1,8 +1,8 @@
-import { stuffRouter } from "@/server/api/router/stuff"
+import { expressionRouter } from "@/server/api/router/expression"
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc"
 
 export const appRouter = createTRPCRouter({
-	stuff: stuffRouter
+	expression: expressionRouter
 })
 
 export type AppRouter = typeof appRouter

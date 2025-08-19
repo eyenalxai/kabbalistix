@@ -7,8 +7,8 @@ import { parseZodSchema } from "@/lib/zod/parse"
 import { rustOutput } from "@/lib/zod/rust"
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc"
 
-export const stuffRouter = createTRPCRouter({
-	getPublicStuff: publicProcedure
+export const expressionRouter = createTRPCRouter({
+	findExpression: publicProcedure
 		.input(inputSchema)
 		.query(async ({ input }) => {
 			return await executeRust(input.input, input.target)
