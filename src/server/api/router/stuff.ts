@@ -1,22 +1,15 @@
 import { TRPCError } from "@trpc/server"
 import { err, ok } from "neverthrow"
-import { z } from "zod"
 import { parseJsonOutput } from "@/lib/json"
 import { executeRust } from "@/lib/rust"
+import { inputSchema } from "@/lib/zod/input"
 import { parseZodSchema } from "@/lib/zod/parse"
 import { rustOutput } from "@/lib/zod/rust"
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc"
 
-const MAX_VALUE = 99999999
-
 export const stuffRouter = createTRPCRouter({
 	getPublicStuff: publicProcedure
-		.input(
-			z.object({
-				input: z.number().min(1).max(MAX_VALUE),
-				target: z.number().max(MAX_VALUE * 10)
-			})
-		)
+		.input(inputSchema)
 		.query(async ({ input }) => {
 			return await executeRust(input.input, input.target)
 				.andThen(({ stdout }) =>
