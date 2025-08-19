@@ -23,7 +23,13 @@ export const stuffRouter = createTRPCRouter({
 						})
 				)
 				.match(
-					(data) => data,
+					(data) => {
+						console.log(data)
+						return {
+							latex: `$$${data.latex}$$`,
+							value: data.value
+						}
+					},
 					(error) => {
 						throw new TRPCError({
 							code: "INTERNAL_SERVER_ERROR",
