@@ -36,11 +36,20 @@ export default function Page() {
 	}
 
 	return (
-		<div className={cn("flex", "flex-col", "items-center", "gap-4", "w-full")}>
+		<div
+			className={cn(
+				"flex",
+				"flex-col",
+				"items-center",
+				"justify-center",
+				"gap-4",
+				"w-full"
+			)}
+		>
 			<Form {...methods}>
 				<form
 					onSubmit={methods.handleSubmit(onSubmit)}
-					className={cn("space-y-2", "w-full")}
+					className={cn("w-full", "flex", "flex-col", "gap-4")}
 				>
 					<FormField
 						control={methods.control}
@@ -94,7 +103,9 @@ export default function Page() {
 							</FormItem>
 						)}
 					/>
-					<Button type="submit">Submit</Button>
+					<Button className={cn("w-fit", "self-center")} type="submit">
+						Submit
+					</Button>
 				</form>
 			</Form>
 			{input && <ResultDisplay input={input} />}

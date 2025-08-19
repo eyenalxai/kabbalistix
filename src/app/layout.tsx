@@ -1,4 +1,5 @@
 import "./globals.css"
+import "katex/dist/katex.min.css"
 import { GeistMono } from "geist/font/mono"
 import { GeistSans } from "geist/font/sans"
 import type { Metadata, Viewport } from "next"
