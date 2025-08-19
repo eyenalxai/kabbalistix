@@ -1,33 +1,16 @@
 "use client"
 
 import { Copy } from "lucide-react"
-import ReactMarkdown from "react-markdown"
-import rehypeKatex from "rehype-katex"
-import remarkGfm from "remark-gfm"
-import remarkMath from "remark-math"
 import { toast } from "sonner"
 import type { z } from "zod"
 import { ErrorComponent } from "@/components/error-component"
 import { Loading } from "@/components/loading"
+import { MarkdownComponent } from "@/components/markdown"
 import { api } from "@/components/providers/trpc-provider"
 import { Button } from "@/components/ui/button"
 import { copyToClipboard } from "@/lib/clipboard"
 import { cn } from "@/lib/utils"
 import type { inputSchema } from "@/lib/zod/input"
-
-// Markdown component for rendering content with LaTeX support
-const MarkdownComponent = ({ content }: { content: string }) => {
-	return (
-		<div className="prose prose-sm max-w-none dark:prose-invert">
-			<ReactMarkdown
-				remarkPlugins={[remarkGfm, remarkMath]}
-				rehypePlugins={[rehypeKatex]}
-			>
-				{content}
-			</ReactMarkdown>
-		</div>
-	)
-}
 
 export const ResultDisplay = (props: {
 	input: z.infer<typeof inputSchema>
@@ -49,7 +32,7 @@ export const ResultDisplay = (props: {
 
 	return (
 		<div className={cn("flex", "flex-row", "gap-4", "items-center")}>
-			<MarkdownComponent content={data?.latex || ""} />
+			<MarkdownComponent content={data.latex} />
 			<Button
 				variant="outline"
 				size="icon"
