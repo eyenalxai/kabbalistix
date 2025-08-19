@@ -21,12 +21,10 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { inputSchema } from "@/lib/zod/input"
 
-type FormData = z.infer<typeof inputSchema>
-
 export default function Page() {
-	const [input, setInput] = useState<FormData | null>(null)
+	const [input, setInput] = useState<z.infer<typeof inputSchema> | null>(null)
 
-	const methods = useForm<FormData>({
+	const methods = useForm<z.infer<typeof inputSchema>>({
 		resolver: zodResolver(inputSchema),
 		defaultValues: {
 			input: undefined,
@@ -34,7 +32,7 @@ export default function Page() {
 		}
 	})
 
-	const onSubmit = (values: FormData) => {
+	const onSubmit = (values: z.infer<typeof inputSchema>) => {
 		setInput(values)
 	}
 
