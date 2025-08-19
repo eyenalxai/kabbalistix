@@ -1,8 +1,7 @@
 FROM archlinux:latest AS rust-builder
 RUN pacman -Sy --noconfirm rust cargo git
 WORKDIR /app
-COPY . .
-RUN git submodule update --init --recursive
+RUN git clone https://github.com/eyenalxai/kabbalistix-rs.git
 WORKDIR /app/kabbalistix-rs
 RUN cargo build --release
 
