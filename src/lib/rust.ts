@@ -14,7 +14,7 @@ export const executeRust = (input: number, target: number) => {
 		"kabbalistix"
 	)
 
-	const command = `${binaryPath} --log-level off --output-format latex --json ${input} ${target}`
+	const command = `${binaryPath} --log-level off --output-format both --json ${input} ${target}`
 
 	return ResultAsync.fromPromise(
 		execAsync(command, {

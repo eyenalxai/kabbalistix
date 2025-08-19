@@ -27,6 +27,7 @@ export const stuffRouter = createTRPCRouter({
 						console.log(data)
 						return {
 							latex: `$$${data.latex}$$`,
+							expression: data.expression,
 							value: data.value
 						}
 					},

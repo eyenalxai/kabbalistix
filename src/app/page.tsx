@@ -57,7 +57,7 @@ export default function Page() {
 												(value) => field.onChange(value),
 												(error) => {
 													toast.error(error, {
-														position: "top-center"
+														position: "bottom-center"
 													})
 												}
 											)
@@ -83,7 +83,7 @@ export default function Page() {
 												(value) => field.onChange(value),
 												(error) => {
 													toast.error(error, {
-														position: "top-center"
+														position: "bottom-center"
 													})
 												}
 											)

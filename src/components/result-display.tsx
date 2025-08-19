@@ -7,8 +7,11 @@ import rehypeKatex from "rehype-katex"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 import "katex/dist/katex.min.css"
+import { toast } from "sonner"
 import type { z } from "zod"
 import { api } from "@/components/providers/trpc-provider"
+import { Button } from "@/components/ui/button"
+import { copyToClipboard } from "@/lib/clipboard"
 import type { inputSchema } from "@/lib/zod/input"
 
 // Markdown component for rendering LLM output with LaTeX support
@@ -63,6 +66,22 @@ export const ResultDisplay = (props: {
 					/>
 				)
 			})}
+			<Button
+				onClick={() =>
+					copyToClipboard(data.expression).match(
+						() =>
+							toast.success("Copied to clipboard", {
+								position: "bottom-center"
+							}),
+						(error) =>
+							toast.error(error, {
+								position: "bottom-center"
+							})
+					)
+				}
+			>
+				Copy Expression
+			</Button>
 		</div>
 	)
 }
