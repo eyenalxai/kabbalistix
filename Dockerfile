@@ -27,7 +27,7 @@ ENV SKIP_VALIDATION=true
 RUN yarn build
 
 FROM archlinux:latest AS runner
-RUN pacman -Sy --noconfirm nodejs npm
+RUN pacman -Sy --noconfirm nodejs npm yarn
 WORKDIR /app
 
 ENV NODE_ENV=production
