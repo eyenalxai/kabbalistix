@@ -29,7 +29,7 @@
 		}
 	},
 	"deploy": {
-		"startCommand": "yarn turbo run start --filter=@kabbalistix/web",
+		"startCommand": "yarn turbo start-web --filter @kabbalistix/web",
 		"variables": {
 			"NODE_ENV": "production"
 		}

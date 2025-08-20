@@ -32,6 +32,13 @@
 			"persistent": true,
 			"interruptible": true,
 			"inputs": ["$TURBO_DEFAULT$", "src/**/*.ts", "src/**/*.tsx"]
+		},
+		"start-web": {
+			"dependsOn": ["@kabbalistix/web#build"],
+			"cache": false,
+			"persistent": true,
+			"interruptible": true,
+			"inputs": ["$TURBO_DEFAULT$", ".env*"]
 		}
 	}
 }

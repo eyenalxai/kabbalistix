@@ -9,9 +9,11 @@
 		"check-types": "turbo run check-types",
 		"check": "yarn lint && yarn check-types"
 	},
-	"devDependencies": {
-		"@biomejs/biome": "2.2.0",
+	"dependencies": {
 		"turbo": "^2.5.6"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.0"
 	},
 	"workspaces": [
 		"apps/*",
