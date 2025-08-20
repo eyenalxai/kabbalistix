@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { skipToken } from "@tanstack/react-query"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, MotionConfig, motion } from "framer-motion"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -51,6 +51,12 @@ export default function Page() {
 
 	const onSubmit = (values: z.infer<typeof inputSchema>) => {
 		setInput(values)
+	}
+
+	const animationConfig = {
+		initial: { opacity: 0, scale: 0.95, filter: "blur(8px)" },
+		animate: { opacity: 1, scale: 1, filter: "blur(0px)" },
+		exit: { opacity: 0, scale: 1.05, filter: "blur(6px)" }
 	}
 
 	return (
@@ -120,30 +126,22 @@ export default function Page() {
 					</form>
 				</Form>
 			</Card>
-			<AnimatePresence mode="wait">
-				{isPending && !!input && (
-					<motion.div
-						key="loading"
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -20 }}
-						transition={{ duration: 0.3, ease: "easeInOut" }}
-					>
-						<Loading />
-					</motion.div>
-				)}
-				{data && (
-					<motion.div
-						key="result-display"
-						initial={{ opacity: 0, y: 20 }}
-						animate={{ opacity: 1, y: 0 }}
-						exit={{ opacity: 0, y: -20 }}
-						transition={{ duration: 0.3, ease: "easeInOut" }}
-					>
-						<ResultDisplay latex={data.latex} expression={data.expression} />
-					</motion.div>
-				)}
-			</AnimatePresence>
+			<MotionConfig
+				transition={{ type: "spring", stiffness: 300, damping: 30 }}
+			>
+				<AnimatePresence mode="popLayout">
+					{isPending && !!input && (
+						<motion.div key="loading" {...animationConfig}>
+							<Loading />
+						</motion.div>
+					)}
+					{data && (
+						<motion.div key="result-display" {...animationConfig}>
+							<ResultDisplay latex={data.latex} expression={data.expression} />
+						</motion.div>
+					)}
+				</AnimatePresence>
+			</MotionConfig>
 		</div>
 	)
 }
