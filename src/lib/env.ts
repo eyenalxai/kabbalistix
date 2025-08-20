@@ -6,7 +6,7 @@ export const env = createEnv({
 		NODE_ENV: z
 			.enum(["development", "test", "production"])
 			.default("development"),
-		TIMEOUT_SECONDS: z.number().default(15)
+		TIMEOUT_SECONDS: z.coerce.number().default(15)
 	},
 	client: {
 		NEXT_PUBLIC_APP_URL: z.url()
