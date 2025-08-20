@@ -54,12 +54,8 @@ RUN yarn workspaces focus --production && yarn cache clean
 
 USER nextjs
 
-EXPOSE 3000
-
-ARG HOSTNAME
-ENV HOSTNAME=${HOSTNAME:-0.0.0.0}
-
 ARG PORT
 ENV PORT=${PORT:-3000}
+EXPOSE ${PORT}
 
-CMD yarn start --hostname $HOSTNAME
+CMD ["yarn", "start", "--hostname", "0.0.0.0"]
