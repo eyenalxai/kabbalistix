@@ -15,7 +15,9 @@
 				"RATE_LIMIT_MAX_REQUESTS",
 				"NEXT_PUBLIC_APP_URL",
 				"SKIP_VALIDATION"
-			]
+			],
+			"dependsOn": ["@kabbalistix/cli#build"],
+			"outputs": ["target/release/kabbalistix"]
 		},
 		"lint": {
 			"dependsOn": ["^lint"]

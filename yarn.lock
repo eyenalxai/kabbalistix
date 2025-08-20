@@ -1100,6 +1100,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@kabbalistix/cli@workspace:apps/cli":
+  version: 0.0.0-use.local
+  resolution: "@kabbalistix/cli@workspace:apps/cli"
+  languageName: unknown
+  linkType: soft
+
 "@kabbalistix/typescript-config@workspace:*, @kabbalistix/typescript-config@workspace:packages/typescript-config":
   version: 0.0.0-use.local
   resolution: "@kabbalistix/typescript-config@workspace:packages/typescript-config"

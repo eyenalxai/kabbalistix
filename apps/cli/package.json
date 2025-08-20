@@ -1,0 +1,11 @@
+{
+	"name": "@kabbalistix/cli",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "cargo watch -x 'run --bin kabbalistix'",
+		"build": "cargo build --release",
+		"start": "cargo run --bin kabbalistix",
+		"check-types": "cargo clippy"
+	}
+}
