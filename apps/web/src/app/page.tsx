@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import type { z } from "zod"
+import { ErrorComponent } from "../components/error-component"
 import { Loading } from "../components/loading"
 import { api } from "../components/providers/trpc-provider"
 import { ResultDisplay } from "../components/result-display"
@@ -44,6 +45,8 @@ export default function Page() {
 
 	const methods = useForm<z.infer<typeof inputSchema>>({
 		resolver: zodResolver(inputSchema),
+		mode: "onSubmit",
+		reValidateMode: "onSubmit",
 		defaultValues: {
 			input: undefined,
 			target: undefined
@@ -71,12 +74,12 @@ export default function Page() {
 	return (
 		<div
 			className={cn(
+				"w-full",
 				"flex",
 				"flex-col",
 				"items-center",
 				"justify-center",
-				"gap-4",
-				"w-full"
+				"gap-4"
 			)}
 		>
 			<Card className={cn("p-4", "w-full")}>
@@ -127,7 +130,11 @@ export default function Page() {
 								</FormItem>
 							)}
 						/>
-						<Button className={cn("w-fit")} type="submit">
+						<Button
+							disabled={isFetching || !methods.formState.isValid}
+							className={cn("w-fit")}
+							type="submit"
+						>
 							Find Expression
 						</Button>
 					</form>
@@ -145,6 +152,15 @@ export default function Page() {
 					{!isFetching && data && (
 						<motion.div key="result-display" {...animationConfig}>
 							<ResultDisplay latex={data.latex} expression={data.expression} />
+						</motion.div>
+					)}
+					{error && (
+						<motion.div
+							className={cn("w-full")}
+							key="error"
+							{...animationConfig}
+						>
+							<ErrorComponent message={error.message} />
 						</motion.div>
 					)}
 				</AnimatePresence>
