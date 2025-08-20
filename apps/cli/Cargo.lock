@@ -210,7 +210,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "kabbalistix"
+name = "kabbalistix-cli"
 version = "0.1.0"
 dependencies = [
  "anyhow",
