@@ -17,8 +17,7 @@ import {
 	FormControl,
 	FormField,
 	FormItem,
-	FormLabel,
-	FormMessage
+	FormLabel
 } from "../components/ui/form"
 import { Input } from "../components/ui/input"
 import { cn } from "../lib/utils"
@@ -27,17 +26,15 @@ import { inputSchema } from "../lib/zod/input"
 export default function Page() {
 	const [input, setInput] = useState<z.infer<typeof inputSchema> | null>(null)
 
-	const { data, isPending, error } = api.expression.findExpression.useQuery(
-		input ?? skipToken,
-		{
+	const { data, isFetching, error, refetch } =
+		api.expression.findExpression.useQuery(input ?? skipToken, {
 			enabled: !!input,
 			retry: false,
 			retryOnMount: false,
 			refetchOnWindowFocus: false,
 			refetchOnMount: false,
 			refetchOnReconnect: false
-		}
-	)
+		})
 
 	useEffect(() => {
 		if (error) {
@@ -55,6 +52,14 @@ export default function Page() {
 
 	const onSubmit = (values: z.infer<typeof inputSchema>) => {
 		setInput(values)
+		// Force refetch even if input values are the same
+		if (
+			input &&
+			input.input === values.input &&
+			input.target === values.target
+		) {
+			refetch()
+		}
 	}
 
 	const animationConfig = {
@@ -98,7 +103,6 @@ export default function Page() {
 											}}
 										/>
 									</FormControl>
-									<FormMessage />
 								</FormItem>
 							)}
 						/>
@@ -120,7 +124,6 @@ export default function Page() {
 											}}
 										/>
 									</FormControl>
-									<FormMessage />
 								</FormItem>
 							)}
 						/>
@@ -134,12 +137,12 @@ export default function Page() {
 				transition={{ type: "spring", stiffness: 300, damping: 30 }}
 			>
 				<AnimatePresence mode="popLayout">
-					{isPending && !!input && (
+					{isFetching && !!input && (
 						<motion.div key="loading" {...animationConfig}>
 							<Loading />
 						</motion.div>
 					)}
-					{data && (
+					{!isFetching && data && (
 						<motion.div key="result-display" {...animationConfig}>
 							<ResultDisplay latex={data.latex} expression={data.expression} />
 						</motion.div>
