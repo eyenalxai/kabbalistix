@@ -4,6 +4,7 @@ import superjson from "superjson"
 import { ZodError } from "zod"
 import { env } from "@/lib/env"
 import { getRedisClient } from "@/lib/redis"
+import { formatDuration } from "@/lib/time"
 
 export const createTRPCContext = async (opts: { headers: Headers }) => opts
 
@@ -73,7 +74,7 @@ const rateLimitMiddleware = t.middleware(async ({ ctx, path, next, type }) => {
 				if (count > maxRequests) {
 					throw new TRPCError({
 						code: "TOO_MANY_REQUESTS",
-						message: "Rate limit exceeded"
+						message: `Rate limit exceeded: allowed ${maxRequests} requests per ${formatDuration(windowSeconds)}`
 					})
 				}
 				return next()
