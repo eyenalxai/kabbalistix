@@ -1,6 +1,9 @@
 FROM archlinux:latest AS base
 RUN pacman -Sy --noconfirm nodejs git yarn
 
+FROM base AS builder
+RUN pacman -Sy --noconfirm rust cargo
+
 FROM base AS pruner
 WORKDIR /app
 COPY package.json yarn.lock .yarnrc.yml ./
@@ -11,7 +14,7 @@ RUN yarn install --immutable
 COPY . .
 RUN yarn turbo prune --scope=@kabbalistix/web --docker
 
-FROM base AS installer
+FROM builder AS installer
 WORKDIR /app
 # Install from pruned metadata first, then bring in sources
 COPY --from=pruner /app/out/json/ .
