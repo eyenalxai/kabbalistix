@@ -119,10 +119,10 @@ impl fmt::Display for Expression {
                     write_with_parens(f, r, need_r)
                 }
                 Expression::Neg(e) => {
-                    if let Expression::Number(n) = e.as_ref()
-                        && *n == 0.0
-                    {
-                        return write!(f, "0");
+                    if let Expression::Number(n) = e.as_ref() {
+                        if *n == 0.0 {
+                            return write!(f, "0");
+                        }
                     }
                     if let Expression::Neg(inner) = e.as_ref() {
                         fmt_expression(f, inner)

@@ -28,11 +28,11 @@ impl ExpressionSolver {
 
         if let Ok(num) = digits_to_number(digits, 0, len) {
             let expr = Expression::Number(num);
-            if let Ok(value) = expr.evaluate()
-                && (value - target).abs() < EPSILON
-            {
-                info!("Found exact match as base number: {}", expr);
-                return Some(expr);
+            if let Ok(value) = expr.evaluate() {
+                if (value - target).abs() < EPSILON {
+                    info!("Found exact match as base number: {}", expr);
+                    return Some(expr);
+                }
             }
         }
 
@@ -185,10 +185,12 @@ impl ExpressionSolver {
                             }
 
                             if let Some(root) = ExpressionGenerator::generate_nth_root(left, right)
-                                && let Ok(value) = root.evaluate()
-                                && (value - target).abs() < EPSILON
                             {
-                                return Some(root);
+                                if let Ok(value) = root.evaluate() {
+                                    if (value - target).abs() < EPSILON {
+                                        return Some(root);
+                                    }
+                                }
                             }
 
                             None
@@ -250,10 +252,10 @@ impl ExpressionSolver {
                 if current_combo.len() >= 2 {
                     let ops = ExpressionGenerator::generate_nary_ops(&current_combo);
                     for expr in ops {
-                        if let Ok(value) = expr.evaluate()
-                            && (value - target).abs() < EPSILON
-                        {
-                            return Some(expr);
+                        if let Ok(value) = expr.evaluate() {
+                            if (value - target).abs() < EPSILON {
+                                return Some(expr);
+                            }
                         }
                     }
                 }
