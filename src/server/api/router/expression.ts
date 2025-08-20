@@ -11,7 +11,10 @@ export const expressionRouter = createTRPCRouter({
 	findExpression: publicProcedure
 		.input(inputSchema)
 		.query(async ({ input }) => {
-			return await executeRust(input.input, input.target)
+			return await executeRust({
+				input: input.input,
+				target: input.target
+			})
 				.andThen(({ stdout }) =>
 					parseJsonOutput(stdout)
 						.andThen((parsed) => parseZodSchema(rustOutput, parsed))
