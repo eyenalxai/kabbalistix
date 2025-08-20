@@ -42,10 +42,15 @@ RUN chown -R nextjs:nodejs ./kabbalistix-rs
 
 COPY --from=builder /app/public ./public
 
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
+COPY --from=builder --chown=nextjs:nodejs /app/yarn.lock ./yarn.lock
+COPY --from=builder --chown=nextjs:nodejs /app/.yarnrc.yml ./.yarnrc.yml
+COPY --from=builder --chown=nextjs:nodejs /app/.yarn ./.yarn
+COPY --from=builder --chown=nextjs:nodejs /app/next.config.ts ./next.config.ts
+COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
+COPY --from=builder --chown=nextjs:nodejs /app/src ./src
+
+RUN yarn workspaces focus --production && yarn cache clean
 
 USER nextjs
 
@@ -55,4 +60,4 @@ ENV HOST=0.0.0.0
 ARG PORT
 ENV PORT=${PORT:-3000}
 
-CMD ["node", "server.js"]
+CMD ["yarn", "start"]
