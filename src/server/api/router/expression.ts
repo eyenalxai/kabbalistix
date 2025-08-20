@@ -26,14 +26,11 @@ export const expressionRouter = createTRPCRouter({
 						})
 				)
 				.match(
-					(data) => {
-						console.log(data)
-						return {
-							latex: `$$${data.latex}$$`,
-							expression: data.expression,
-							value: data.value
-						}
-					},
+					(data) => ({
+						latex: `$$${data.latex}$$`,
+						expression: data.expression,
+						value: data.value
+					}),
 					(error) => {
 						throw new TRPCError({
 							code: "INTERNAL_SERVER_ERROR",
