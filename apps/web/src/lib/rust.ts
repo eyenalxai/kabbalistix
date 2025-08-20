@@ -1,5 +1,4 @@
 import { exec } from "node:child_process"
-import path from "node:path"
 import { promisify } from "node:util"
 import { ResultAsync } from "neverthrow"
 import { env } from "@/lib/env"
@@ -12,17 +11,7 @@ type ExecuteRustProps = {
 }
 
 export const executeRust = (props: ExecuteRustProps) => {
-	const binaryPath = path.join(
-		process.cwd(),
-		"..",
-		"..",
-		"kabbalistix-rs",
-		"target",
-		"release",
-		"kabbalistix"
-	)
-
-	const command = `${binaryPath} --log-level off --output-format both --json ${props.input} ${props.target}`
+	const command = `./kabbalistix --log-level off --output-format both --json ${props.input} ${props.target}`
 
 	return ResultAsync.fromPromise(
 		execAsync(command, {

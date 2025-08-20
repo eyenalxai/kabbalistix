@@ -2,8 +2,8 @@ mod expression;
 mod solver;
 mod utils;
 
-use solver::ExpressionSolver;
 use solver::constants::EPSILON;
+use solver::ExpressionSolver;
 use utils::validate_digit_string;
 
 use anyhow::{Context, Result};

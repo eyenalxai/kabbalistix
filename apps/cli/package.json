@@ -3,8 +3,8 @@
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
-		"dev": "cargo watch -x 'run --bin kabbalistix'",
-		"build": "cargo build --release",
+		"dev": "cargo watch -x 'build' -s 'cp target/debug/kabbalistix ../../apps/web/kabbalistix'",
+		"build": "cargo build --release && cp target/release/kabbalistix ../../apps/web/kabbalistix",
 		"start": "cargo run --bin kabbalistix",
 		"check-types": "cargo clippy"
 	}
