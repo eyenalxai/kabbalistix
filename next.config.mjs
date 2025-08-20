@@ -1,4 +1,6 @@
-import { env } from "@/lib/env"
+if (!process.env.NEXT_PUBLIC_APP_URL) {
+	throw new Error("NEXT_PUBLIC_APP_URL environment variable is required")
+}
 
 const extractDomain = (url) => {
 	const urlObj = new URL(url)
@@ -7,7 +9,7 @@ const extractDomain = (url) => {
 
 const nextConfig = {
 	transpilePackages: ["geist"],
-	allowedDevOrigins: [extractDomain(env.NEXT_PUBLIC_APP_URL)]
+	allowedDevOrigins: [extractDomain(process.env.NEXT_PUBLIC_APP_URL)]
 }
 
 module.exports = nextConfig
