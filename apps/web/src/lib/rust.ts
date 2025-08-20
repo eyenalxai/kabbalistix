@@ -2,7 +2,7 @@ import { exec } from "node:child_process"
 import path from "node:path"
 import { promisify } from "node:util"
 import { ResultAsync } from "neverthrow"
-import { env } from "./env"
+import { env } from "@/lib/env"
 
 const execAsync = promisify(exec)
 

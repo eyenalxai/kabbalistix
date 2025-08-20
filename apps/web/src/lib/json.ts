@@ -1,5 +1,5 @@
 import { Result } from "neverthrow"
-import { getErrorMessage } from "./error-message"
+import { getErrorMessage } from "@/lib/error-message"
 
 export const parseJsonOutput = (stdout: string) => {
 	return Result.fromThrowable(

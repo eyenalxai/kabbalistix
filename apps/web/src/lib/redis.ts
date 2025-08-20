@@ -1,6 +1,6 @@
 import { ResultAsync } from "neverthrow"
 import { createClient } from "redis"
-import { env } from "./env"
+import { env } from "@/lib/env"
 
 let client: ReturnType<typeof createClient> | undefined =
 	globalThis.__redisClient__
