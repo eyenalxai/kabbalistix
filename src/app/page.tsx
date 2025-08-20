@@ -1,10 +1,14 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
+import { skipToken } from "@tanstack/react-query"
+import { AnimatePresence, motion } from "framer-motion"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-
+import { toast } from "sonner"
 import type { z } from "zod"
+import { Loading } from "@/components/loading"
+import { api } from "@/components/providers/trpc-provider"
 import { ResultDisplay } from "@/components/result-display"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -17,12 +21,25 @@ import {
 	FormMessage
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
 import { cn } from "@/lib/utils"
 import { inputSchema } from "@/lib/zod/input"
 
 export default function Page() {
 	const [input, setInput] = useState<z.infer<typeof inputSchema> | null>(null)
+
+	const { data, isPending, error } = api.expression.findExpression.useQuery(
+		input ?? skipToken,
+		{
+			retry: false,
+			enabled: !!input
+		}
+	)
+
+	useEffect(() => {
+		if (error) {
+			toast.error(error.message)
+		}
+	}, [error])
 
 	const methods = useForm<z.infer<typeof inputSchema>>({
 		resolver: zodResolver(inputSchema),
@@ -103,7 +120,30 @@ export default function Page() {
 					</form>
 				</Form>
 			</Card>
-			{input && <ResultDisplay input={input} />}
+			<AnimatePresence mode="wait">
+				{isPending && !!input && (
+					<motion.div
+						key="loading"
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: -20 }}
+						transition={{ duration: 0.3, ease: "easeInOut" }}
+					>
+						<Loading />
+					</motion.div>
+				)}
+				{data && (
+					<motion.div
+						key="result-display"
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						exit={{ opacity: 0, y: -20 }}
+						transition={{ duration: 0.3, ease: "easeInOut" }}
+					>
+						<ResultDisplay latex={data.latex} expression={data.expression} />
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</div>
 	)
 }
