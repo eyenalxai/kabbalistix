@@ -30,8 +30,12 @@ export default function Page() {
 	const { data, isPending, error } = api.expression.findExpression.useQuery(
 		input ?? skipToken,
 		{
+			enabled: !!input,
 			retry: false,
-			enabled: !!input
+			retryOnMount: false,
+			refetchOnWindowFocus: false,
+			refetchOnMount: false,
+			refetchOnReconnect: false
 		}
 	)
 
