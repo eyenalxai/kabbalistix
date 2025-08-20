@@ -1,0 +1,37 @@
+{
+	"$schema": "https://schema.railpack.com",
+	"provider": "node",
+	"packages": {
+		"node": "24",
+		"rust": "v1.86.0"
+	},
+	"buildAptPackages": [
+		"git",
+		"build-essential",
+		"pkg-config",
+		"libssl-dev",
+		"curl",
+		"ca-certificates",
+		"cargo"
+	],
+	"caches": {
+		"cargo-registry": {
+			"directory": "/root/.cargo/registry",
+			"type": "shared"
+		},
+		"cargo-git": {
+			"directory": "/root/.cargo/git",
+			"type": "shared"
+		},
+		"cargo-target": {
+			"directory": "/app/apps/cli/target",
+			"type": "shared"
+		}
+	},
+	"deploy": {
+		"startCommand": "yarn turbo run start --filter=@kabbalistix/web",
+		"variables": {
+			"NODE_ENV": "production"
+		}
+	}
+}
