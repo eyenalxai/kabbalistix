@@ -14,6 +14,8 @@ type ExecuteRustProps = {
 export const executeRust = (props: ExecuteRustProps) => {
 	const binaryPath = path.join(
 		process.cwd(),
+		"..",
+		"..",
 		"kabbalistix-rs",
 		"target",
 		"release",
