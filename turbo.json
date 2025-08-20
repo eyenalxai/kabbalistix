@@ -16,7 +16,9 @@
 				"NEXT_PUBLIC_APP_URL",
 				"SKIP_VALIDATION"
 			],
-			"dependsOn": ["@kabbalistix/cli#build"],
+			"dependsOn": ["@kabbalistix/cli#build"]
+		},
+		"@kabbalistix/cli#build": {
 			"outputs": ["target/release/kabbalistix"]
 		},
 		"lint": {
