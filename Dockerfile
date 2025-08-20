@@ -56,10 +56,10 @@ USER nextjs
 
 EXPOSE 3000
 
-ARG HOST
-ENV HOST=${HOST:-0.0.0.0}
+ARG HOSTNAME
+ENV HOSTNAME=${HOSTNAME:-0.0.0.0}
 
 ARG PORT
 ENV PORT=${PORT:-3000}
 
-CMD ["yarn", "start", "--hostname", "$HOST"]
+CMD yarn start --hostname $HOSTNAME
