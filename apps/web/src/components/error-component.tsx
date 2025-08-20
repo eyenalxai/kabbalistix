@@ -1,4 +1,5 @@
 import type { VariantProps } from "class-variance-authority"
+import { cn } from "../lib/utils"
 import {
 	Alert,
 	AlertDescription,
@@ -6,16 +7,21 @@ import {
 	type alertVariants
 } from "./ui/alert"
 
-type ErrorProps = {
-	message: string
-	title?: string
-} & VariantProps<typeof alertVariants>
+type ErrorProps = (
+	| {
+			message: string
+			title?: string
+	  }
+	| { message: string; error?: boolean }
+) &
+	VariantProps<typeof alertVariants>
 
-export const ErrorComponent = ({ message, title, variant }: ErrorProps) => {
+export const ErrorComponent = (props: ErrorProps) => {
 	return (
-		<Alert variant={variant}>
-			<AlertTitle>{title || "Error"}</AlertTitle>
-			<AlertDescription>{message}</AlertDescription>
+		<Alert variant={props.variant} className={cn("w-full")}>
+			{"title" in props && <AlertTitle>{props.title}</AlertTitle>}
+			{"error" in props && <AlertTitle>Error</AlertTitle>}
+			<AlertDescription>{props.message}</AlertDescription>
 		</Alert>
 	)
 }
