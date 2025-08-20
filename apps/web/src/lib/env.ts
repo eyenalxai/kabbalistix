@@ -17,10 +17,10 @@ export const env = createEnv({
 	runtimeEnv: {
 		NODE_ENV: process.env.NODE_ENV,
 		REDIS_URL: process.env.REDIS_URL,
-		NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
 		TIMEOUT_SECONDS: process.env.TIMEOUT_SECONDS,
 		RATE_LIMIT_WINDOW_SECONDS: process.env.RATE_LIMIT_WINDOW_SECONDS,
-		RATE_LIMIT_MAX_REQUESTS: process.env.RATE_LIMIT_MAX_REQUESTS
+		RATE_LIMIT_MAX_REQUESTS: process.env.RATE_LIMIT_MAX_REQUESTS,
+		NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL
 	},
 	skipValidation: process.env.SKIP_VALIDATION?.toLowerCase() === "true"
 })

@@ -1,5 +1,5 @@
-import { expressionRouter } from "./router/expression"
-import { createCallerFactory, createTRPCRouter } from "./trpc"
+import { expressionRouter } from "@/server/api/router/expression"
+import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc"
 
 export const appRouter = createTRPCRouter({
 	expression: expressionRouter

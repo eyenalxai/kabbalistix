@@ -2,9 +2,9 @@ import { initTRPC, TRPCError } from "@trpc/server"
 import { ResultAsync } from "neverthrow"
 import superjson from "superjson"
 import { ZodError } from "zod"
-import { env } from "../../lib/env"
-import { getRedisClient } from "../../lib/redis"
-import { formatDuration } from "../../lib/time"
+import { env } from "@/lib/env"
+import { getRedisClient } from "@/lib/redis"
+import { formatDuration } from "@/lib/time"
 
 export const createTRPCContext = async (opts: { headers: Headers }) => opts
 

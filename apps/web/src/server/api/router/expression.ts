@@ -1,11 +1,11 @@
 import { TRPCError } from "@trpc/server"
 import { err, ok } from "neverthrow"
-import { parseJsonOutput } from "../../../lib/json"
-import { executeRust } from "../../../lib/rust"
-import { inputSchema } from "../../../lib/zod/input"
-import { parseZodSchema } from "../../../lib/zod/parse"
-import { rustOutput } from "../../../lib/zod/rust"
-import { createTRPCRouter, publicProcedure } from "../trpc"
+import { parseJsonOutput } from "@/lib/json"
+import { executeRust } from "@/lib/rust"
+import { inputSchema } from "@/lib/zod/input"
+import { parseZodSchema } from "@/lib/zod/parse"
+import { rustOutput } from "@/lib/zod/rust"
+import { createTRPCRouter, publicProcedure } from "@/server/api/trpc"
 
 export const expressionRouter = createTRPCRouter({
 	findExpression: publicProcedure

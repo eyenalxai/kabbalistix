@@ -4,8 +4,8 @@ import { GeistMono } from "geist/font/mono"
 import { GeistSans } from "geist/font/sans"
 import type { Metadata, Viewport } from "next"
 import type { ReactNode } from "react"
-import { Providers } from "../components/providers"
-import { cn } from "../lib/utils"
+import { Providers } from "@/components/providers"
+import { cn } from "@/lib/utils"
 
 const TITLE = "Kabbalistix"
 const DESCRIPTION =

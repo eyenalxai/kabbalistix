@@ -1,11 +1,11 @@
 import type { VariantProps } from "class-variance-authority"
-import { cn } from "../lib/utils"
 import {
 	Alert,
 	AlertDescription,
 	AlertTitle,
 	type alertVariants
-} from "./ui/alert"
+} from "@/components/ui/alert"
+import { cn } from "@/lib/utils"
 
 type ErrorProps = (
 	| {

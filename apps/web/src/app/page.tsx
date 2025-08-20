@@ -4,25 +4,24 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { skipToken } from "@tanstack/react-query"
 import { AnimatePresence, MotionConfig, motion } from "framer-motion"
 import { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
+import { Form, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import type { z } from "zod"
-import { ErrorComponent } from "../components/error-component"
-import { Loading } from "../components/loading"
-import { api } from "../components/providers/trpc-provider"
-import { ResultDisplay } from "../components/result-display"
-import { Button } from "../components/ui/button"
-import { Card } from "../components/ui/card"
+import { ErrorComponent } from "@/components/error-component"
+import { Loading } from "@/components/loading"
+import { api } from "@/components/providers/trpc-provider"
+import { ResultDisplay } from "@/components/result-display"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import {
-	Form,
 	FormControl,
 	FormField,
 	FormItem,
 	FormLabel
-} from "../components/ui/form"
-import { Input } from "../components/ui/input"
-import { cn } from "../lib/utils"
-import { inputSchema } from "../lib/zod/input"
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
+import { inputSchema } from "@/lib/zod/input"
 
 export default function Page() {
 	const [input, setInput] = useState<z.infer<typeof inputSchema> | null>(null)

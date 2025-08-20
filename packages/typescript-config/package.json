@@ -1,0 +1,21 @@
+{
+	"name": "@kabbalistix/typescript-config",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"license": "proprietary",
+	"files": [
+		"base.json",
+		"nextjs.json",
+		"react-library.json",
+		"lib.json"
+	],
+	"exports": {
+		"./base.json": "./base.json",
+		"./nextjs.json": "./nextjs.json",
+		"./lib.json": "./lib.json"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

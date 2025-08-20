@@ -1,11 +1,11 @@
 "use client"
 
 import { toast } from "sonner"
-import { MarkdownComponent } from "./markdown"
-import { Button } from "./ui/button"
-import { Card } from "./ui/card"
-import { copyToClipboard } from "../lib/clipboard"
-import { cn } from "../lib/utils"
+import { MarkdownComponent } from "@/components/markdown"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { copyToClipboard } from "@/lib/clipboard"
+import { cn } from "@/lib/utils"
 
 export const ResultDisplay = (props: { latex: string; expression: string }) => {
 	return (
