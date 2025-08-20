@@ -9,7 +9,7 @@ export const env = createEnv({
 		REDIS_URL: z.url(),
 		TIMEOUT_SECONDS: z.coerce.number().default(15),
 		RATE_LIMIT_WINDOW_SECONDS: z.coerce.number().default(60),
-		RATE_LIMIT_MAX_REQUESTS: z.coerce.number().default(2)
+		RATE_LIMIT_MAX_REQUESTS: z.coerce.number().default(10)
 	},
 	client: {
 		NEXT_PUBLIC_APP_URL: z.url()
