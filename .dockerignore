@@ -1,0 +1,56 @@
+# VCS
+.git
+.gitignore
+
+# Node/Yarn
+node_modules
+**/node_modules
+.pnp
+.pnp.js
+.yarn/install-state.gz
+.yarn/unplugged/
+.yarn/build-state.yml
+# Exclude Yarn cache to avoid sending large context (container will fetch as needed)
+.yarn/cache/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Next.js
+.next
+**/.next
+out/
+
+# Turbo
+.turbo
+
+# Build artifacts
+build/
+dist/
+coverage/
+**/coverage/
+
+# Misc
+.DS_Store
+*.pem
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+.idea
+.vscode
+
+# Env files (keep only example)
+.env*
+**/.env*
+!.env.example
+!**/.env.example
+
+# Rust
+kabbalistix-rs/
+**/target/
+
+# Dockerfiles
+Dockerfile.*
+
