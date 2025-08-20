@@ -32,9 +32,11 @@ export const executeRust = (props: ExecuteRustProps) => {
 				code?: string
 				stderr?: string
 				message?: string
+				signal?: string
+				killed?: boolean
 			}
 
-			if (execError.code === "ETIMEDOUT") {
+			if (execError.signal === "SIGTERM" && execError.killed === true) {
 				return `Binary execution timed out after ${env.TIMEOUT_SECONDS} seconds`
 			}
 
