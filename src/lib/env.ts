@@ -6,6 +6,7 @@ export const env = createEnv({
 		NODE_ENV: z
 			.enum(["development", "test", "production"])
 			.default("development"),
+		REDIS_URL: z.url(),
 		TIMEOUT_SECONDS: z.coerce.number().default(15)
 	},
 	client: {
@@ -13,6 +14,7 @@ export const env = createEnv({
 	},
 	runtimeEnv: {
 		NODE_ENV: process.env.NODE_ENV,
+		REDIS_URL: process.env.REDIS_URL,
 		NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
 		TIMEOUT_SECONDS: process.env.TIMEOUT_SECONDS
 	},
